@@ -1,0 +1,4 @@
+[submodule "latexbeamer-handoutWithNotes"]
+	path = latexbeamer-handoutWithNotes
+	url = https://github.com/noamsgl/latexbeamer-handoutWithNotes
+	branch = master
