@@ -195,9 +195,9 @@
 % 		\vspace*{-2.5ex}
 	\end{center}
     % 	\note[item]{Thank the audience for being awake.}
-	\note[item]{Prepare markers and eraser, erase the board.}
-	\note[item]{Reset the timer.}
-	\note[item]{Thank the panel for attending.}
+	\note[item]{Prepare markers and eraser, erase the board. (20 minutes -t)}
+	\note[item]{Reset the timer. (5 -t)}
+	\note[item]{Begin welcome speech. (t)}
 \end{frame}
 %%%%%%%%%%%%% License %%%%%%%%%%%%%%
 
@@ -206,6 +206,7 @@
 \begin{frame}
 	\frametitle{Outline}
 	\tableofcontents
+        \note[item]{t+1 : outline plan}
 \end{frame}
 
 %%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%
@@ -244,6 +245,8 @@
         %     EEG is a form of neuroimagery with high temporal accuracy. In the noninvasive setup, a wearable cap holds electrodes in contact with the scalp. The electric potentials induced by the brain are transmitted to a digital recording system for data analysis.}
         %     \label{fig:c1intro:eeg}
         % \end{figure}
+
+    
         
         \begin{figure}
             \centering
@@ -256,11 +259,15 @@
     }
 
 
+    
     \note<1->[item]{\url{https://commons.wikimedia.org/wiki/File:A\_group\_of\_people\_standing\_around\_a\_man\_having\_an\_epileptic\_Wellcome_L0005934.jpg}}
     \note<1->[item]{In this iconograph from the 18th century, we see a group of people standing around a man having an epileptic fit.}
     \note<1->[item]{Studies have shown that the biggest impediment to patients with epilepsy is the uncertainty and surprise factor of the seizures.}
     \note<2->[item]{EEG is a form of neuroimagery with high temporal accuracy. Seen here is a scalp eeg, based on a wearable cap which holds electrodes in contact with the head's surface. The electric potentials induced by the brain are recorded by a digital sampler for data analysis.}
 \end{frame}
+
+
+
 
 
 \begin{frame}<1-4>{Background \& Motivation}
@@ -303,12 +310,12 @@
             \node[font=\fontsize{18}{18}\selectfont, align=right] at (-0.8,-0.5) {\textcolor{deepred}{\$\$\$}};
         }
         %%%%%%%% add inexact sign %%%%%%%%%
-        \onslide<3->{
-            % Draw an approximation symbol to right of annotations
-            \node[font=\fontsize{34}{34}\selectfont, align=left] at (2.6,-0.5) {\textcolor{deepred}{$\thickapprox$}};
-        }
+        % \onslide<3->{
+        %     % Draw an approximation symbol to right of annotations
+        %     \node[font=\fontsize{34}{34}\selectfont, align=left] at (2.6,-0.5) {\textcolor{deepred}{$\thickapprox$}};
+        % }
         %%%%%%%% add coupling arrow %%%%%%%%%
-        \onslide<4->{
+        \onslide<3->{
             % Draw an approximation symbol to right of annotations
             \draw[draw=deepred, <->, very thick] (1,0.9) -- (1,0.1);  % ultra thick
         }
@@ -328,40 +335,33 @@
     %%%%%%%%%% List of challenges %%%%%%%%%%
     \begin{enumerate}
         \onslide<2-> \item<alert@+-> Expensive to produce.
-        \onslide<3-> \item<alert@+-> Disagreements among experts.
-        \onslide<4-> \item<alert@+-> Variables are tightly coupled.
+        % \onslide<3-> \item<alert@+-> Disagreements among experts.
+        \onslide<3-> \item<alert@+-> Variables are tightly coupled.
     \end{enumerate}
+
+    \onslide<4> {
+    \begin{block}{}
+        \begin{enumerate}
+            \item \cite{gardner2006one} - unsupervised seizure detection.
+            \item \cite{karoly2017circadian} - circadian rhythms as priors.
+            \item \cite{yang2022weak} - weak self-supervised learning.
+        \end{enumerate}
+    \end{block}
+
+    }
     
-    \note<1->[item]{For that reason, an active area of research since the 70's has been to predict epileptic seizures using EEGs.}
-    \note<1->[item]{A common paradigm which has been extensively studied, is supervised machine learning from labeled EEG segments.}
-    \note<1->[item]{But, this paradigm suffers from two problems.}
-    \note<2->[item]{First, labels are expensive to produce.}
-    \note<3->[item]{second, EEG signal dynamics are more complex than the simplistic classes that experts have so far defined. Studies show that the labels are inexact, in the sense that disagreements between expert labelers are common in practice.}
-    \note<4->[item]{Third, the annotations are tightly coupled to the EEG.}
-    \note<4->[item]{In other words: untaped seizures. The annotation, which could be collected in a handwritten seizure diary, are useless to the supervised learning paradigm. These types of models can't learn from annotations without EEGs.}
-    \note<4->[item]{Thus, partial or incomplete data points are completely ignored.}
-\end{frame}
-
-
-
-
-\subsection{Prior work}
-
-\begin{frame}{Prior work}
-    \begin{enumerate}
-    \item \citet{deiss2018efficient} introduces a co-learning process for improving label quality through active learning. However, the underlying deep-learning model requires a large labeled dataset.
-    \item \citet{saab2020weak} cut costs by using weak annotations that are already provided as part of the standard clinical workflow. However, the model can not learn from seizure timestamps unless EEG was recorded at the event time, or vice versa.
-    \item \citet{yang2022weak} show that weak self-supervised learning for seizure forecasting is feasible, \emph{provided that} a pretrained detection model is available. Hence, their work depends on a supervised model which was trained on large labeled datasets.
-    \end{enumerate}
-
-\note[item]{(1) Saab, Khaled, et al. "Weak supervision as an efficient approach for automated seizure detection in electroencephalography." NPJ digital medicine 3.1 (2020): 1-12.}
-\note[item]{(2) Deiss, Olivier. Efficient labeling technique and interpretable deep neural network for the classification of seizures using continuous electroencephalograms. Diss. Georgia Institute of Technology, 2018.}
-\note[item]{(3-prework) Yang, Yikai, et al. "Continental generalization of a human-in-the-loop AI system for clinical seizure recognition." Expert Systems with Applications 207 (2022): 118083.}
-\note[item]{(3) Yang, Yikai, et al. "Weak self-supervised learning for seizure forecasting: a feasibility study." Royal Society Open Science 9.8 (2022): 220374.}
-% 	\note[item]{previous approaches to merging planning in stochastic environments and probabilistic inference did not achieve optimal policies, and required fixing the episode length $T$ ahead of time.}
-% % 	\note[item]{Not optimal in the sense of maximizing an expected future reward}
-% 	\note[item]{+++:existing ways to deal with challenges in each field: Factored MDPs or abstractions (in planning), approximate inference (inference).}
-
+    \note<1-1>[item]{For that reason, an active area of research since the 70's has been to predict epileptic seizures using EEGs.}
+    \note<1-3>[item]{A common paradigm which has been extensively studied, is supervised machine learning from labeled EEG segments.}
+    \note<1-3>[item]{But, this paradigm suffers from two problems.}
+    \note<2-3>[item]{First, labels are expensive to produce. It is true that there exist labeled datasets on which seizure detection models achieve high performance. However, these models will be constrained by out-of-budget labels as data grows and shifts. (e.g. change in sensor, or human trying a new activity).}
+    \note<3-3>[item]{Second, the annotations are tightly coupled to the EEG. Supervised models can not learn from EEGs without annotations, or from annotations without EEGs. Recording EEG is cheap, and recording a seizure is cheap, but recording them at the same time and aligning the labels is expensive.}
+    \note<3-3>[item]{So, partial or incomplete data points are completely ignored.}
+    \note<3->[item]{I will now discuss some works related to our research project.}
+    % \note<5->[item]{article 1: Deiss introduces a co-learning process for improving label quality through active learning. However, the underyling deep-learning model requires a large labeled dataset}
+    % \note<5->[item]{article 2: Saab et al cut costs by using annotations from semi-experts that are already provided as part of the standard clinical workflow. However, the model can not learn from seizure timestamps unless EEG was recorded at the event time. Equivalently, the model can not learn from unlabaled EEG.}
+    \note<4->[item]{Gardner et al. use one-class SVM to detect seizures in unsupervised fashion. However, their method is fully unsupervised. It is not not able to learn from supervision, wherever this is available.}
+    \note<4->[item]{Karoly et al. use the hour of the day to estimate a circadian profile for each subject. CP is used as a Bayesian prior to enhance a LR model on seizure forecasting. However, the LR is still trained in a supervised manner.}
+    \note<4->[item]{Yang et al propose a self-supervised seizure prediction model. They use a seizure detection model to generate pseudo labels for a seizure prediction model. The prediction model is trained on these labels. However, the detection model is pretrained on a large labeled dataset.}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -372,7 +372,7 @@
     \begin{block}{Contributions}
         \begin{enumerate}[<+-|alert@+>]
             \item Proposing a Bayesian approach to estimating seizure likelihood using EEG.
-                \item Demonstrating the approach on real-world data, achieving 0.88 AUC-ROC with zero labels on a seizure detection task.
+                \item Demonstrating the approach on real-world data, achieving 0.88 AU-ROC with zero labels on a seizure detection task.
                 \item A weakly supervised version which is biased towards circadian rhythms is shown to improve detection in canines.
         \end{enumerate}
     \end{block}
@@ -383,56 +383,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Research Problem}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}<1-2>{Sample spaces}
-\begin{columns}[t]
-    \begin{column}{0.5\textwidth}
-    \begin{block}{}
-        \onslide<1->{
-        Let:
-        \begin{enumerate}
-            \item {$e_t \sim E(t) \in \Omega_E = \mathbb{R}^{c \times N}$}
-        \end{enumerate}
-        a random EEG variable,
-        }
-        
-        \bigskip
-        \onslide<2->{
-            and:
-            \begin{enumerate}
-                  \setcounter{enumi}{1}
-                \item $s_t \sim S(t) \in \Omega_S = \{0, 1\}$
-            \end{enumerate}
-            a random Seizure variable.
-        }
-    \end{block}
-    
-    \end{column}
-    \begin{column}{0.5\textwidth}
-
-    \begin{figure}  
-        \centering
-        \includegraphics[width=\textwidth]{figs/sample_space_two_top_frames.pdf}
-        \caption{Samples from $E(t_1)$ and $E(t_2)$.}
-        \label{fig:my_label}
-
-        \onslide<2->
-        \centering
-        \includegraphics[width=\textwidth]{figs/sample_space_two_bottom_frames.pdf}
-        \caption{Samples from $S(t_1)$ and $S(t_2)$}
-        \label{fig:my_label}
-    \end{figure}
-
-        
-    \end{column}
-    \end{columns}
-
-    \note<1->[item]{Defining a sample space and random variables.}
-
-
-\end{frame}
 
 \begin{frame}{Research problem}
 
@@ -479,9 +429,72 @@
 \section{Research Plan}
 
 
-\subsection{Overview}
-\begin{frame}{Pipeline}
+\subsection{Data \& Methods}
 
+\begin{frame}{Data}
+    \begin{columns}[T]
+        \begin{column}{0.618 \textwidth}
+        \vspace{-\baselineskip}
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{figs/MayoClinic_CanineEpilepsy_print.pdf}
+                \large Canine Epilepsy Dataset
+                \caption{From: Coles et al. Feasibility study of a caregiver seizure alert system in canine epilepsy. Epilepsy Res. 2013 Oct; 106(3):456-60 Epub 2013. With permission of Mayo Foundation for Medical Education and Research, all rights reserved.}
+                \label{fig:data}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.382 \textwidth}
+            \begin{block}{}
+                Longitudinal data is scarce.
+            \end{block}
+            \begin{block}{}
+                 Invasive systems offer high SNR. 
+            \end{block}
+            \begin{block}{}
+                 4 canines,\\median 390 days iEEG,\\made publicly available by NINDS. 
+            \end{block}
+        \end{column}
+    \end{columns}
+
+    \note[item]{As mentioned, seizures are suspect of having long-term temporal patterns which can be observed on month and year-long scales.}
+    \note[item]{An intracranial EEG system implanted in a dog's brain was wirelessly transmitting the recordings to an external device.}
+    \note[item]{475 days of data were made available online by National Institute of Neurological Disorders and Stroke.}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%% Evaluation Plan %%%%%%%%%%%%%%%
+\subsubsection{Evaluation Plan}
+\begin{frame}<1-2>{Simulating a Prospective Study}
+
+\only<1>{
+    \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figs/unsupervised_study_scope.pdf}
+    \label{fig:my_label}
+    \caption{Scope of study}
+    \end{figure}
+}
+
+\only<2>{
+    \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figs/weakly_supervised_study_scope.pdf}
+    \label{fig:my_label}
+    \caption{Scope of study}
+    \end{figure}
+}
+    
+\note[item]{We simulate a prospective study, which starts with an offline calibration phase, followed by an online validation phase.}
+\note[item]{The separation of concerns ensures simulating a real-time setting, in which the 'offline' calibration phase is followed by an 'online' seizure detection mode.}
+\note[item]{In the unsupervised study, we randomly sample 3000 segments of length 10 seconds each.}
+\note[item]{We use these segments to estimate the parameters of the BSLE model.}
+\note[item]{Next, we take all the seizures from the validation data, along with 3000 randomly sampled segments. We apply the BSLE estimation to each sample independently, to produce seizure probabilities.}
+\note<2->[item]{In the weakly supervised version, we allow the option of appending a list of time stamps during which a past seizure occurred. These can be gained from clinical labels as well as self-reported seizure records.}
+\note<2>[item]{In this case, a cyclical 24-hour prior function is provided based on domain knowledge.}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%% Pipeline %%%%%%%%%%%%%%%
+\begin{frame}{Methods}
     \begin{figure}
         \centering
         \includegraphics[width=\textwidth]{figs/pipeline.pdf}
@@ -494,63 +507,105 @@
 \end{frame}
 
 
-\subsection{Data}
-\begin{frame}{Data Collection}
+%%%%%%%%%%%%%%%%%%% Embeddings %%%%%%%%%%%%%%%
+\subsection{Embedding EEG}
+
+\begin{frame}{Embedding EEG Segments, by}
+
+\begin{columns}[T] % T specifies that the columns should be top-aligned
     
+    \begin{column}{0.618\textwidth} % specifies the width of the left column
+
+    \begin{block}{Maximizing the likelihood of:}
+        % Maximize the likelihood of:
+        $$e(t_1) \sim \mathcal{GP}(m(t), k(t, t'))$$
+        % where (reminder):
+        $$m(t) := \mathbb{E}[e(t)]$$
+        $$k(t, t') := \mathbb{E}[(e(t) - m(t))(e(t') - m(t'))]$$
+    \end{block}
+    
+    \end{column}
+    
+    \begin{column}{0.382\textwidth} % specifies the width of the right column
+    \vspace{-\baselineskip}
     \begin{figure}
         \centering
-        \includegraphics[width=0.7\textwidth]{figs/MayoClinic_CanineEpilepsy_print.pdf}
-        \caption{Canine Epilepsy Dataset. From: Coles et al. Feasibility study of a caregiver seizure alert system in canine epilepsy. Epilepsy Res. 2013 Oct; 106(3):456-60 Epub 2013. Used with permission of Mayo Foundation for Medical Education and Research, all rights reserved.}
-        \label{fig:data}
-    
-        \note[item]{In a seminal work by a mixed team of engineers and veterinarians, a seizure advisory system was evaluated in canines with naturally occuring epilepsy.}
-        \note[item]{An intracranial EEG system implanted in a dog's brain was wirelessly transmitting the recordings to an external device.}
-        \note[item]{475 days of data were made available online.}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Simulating a prospective study}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{figs/empirical_evaluation_data_selection.pdf}
-    \label{fig:my_label}
-\end{figure}
-\note[item]{This separation of concerns ensures simulating a real-time setting, in which the 'offline' calibration phase is followed by an 'online' seizure detection mode.}
-
-\end{frame}
-
-
-\subsection{Embeddings}
-\begin{frame}{Learned embeddings}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.9\textwidth]{figs/embeddings_double.pdf}
-        \caption{Embeddings portrayed in two dimensions.}
+        \includegraphics[width=\textwidth]{figs/eeg_sample.pdf}
         \label{fig:my_label}
     \end{figure}
+    
+    \end{column}
+\end{columns}
+    \vspace{-\baselineskip}
+    \begin{block}{subject to:}
+        \begin{itemize}
+            \item $e(t_1)$ is a given z-scored EEG segment.
+            \item $m \equiv 0$.
+            \item $k \equiv K_{Matern}(\frac{3}{2})$.
+        \end{itemize}
+    \end{block}
 
-\note[item]{Each point represents a 10-second EEG segment fit with a Gaussian process.}
+\note[item]{A Gaussian process defines a distribution over functions of a continuous space, in our case over time from 0 to 10 seconds.}
+\note[item]{A GP can be fully specified by a mean function and a covariance kernel.}
+\note[item]{The first step of our process is to embed the high dimensional time series into a low dimensional representation.}
 \note[item]{The embeddings are learned via gradient descent on a variational lower bound. Maximizing this ensures that the Gaussian Process parameters learned are those that maximize the log-likelihood of the observed data.}
+
 \end{frame}
 
-\begin{frame}{Estimating densities}
+\begin{frame}{Learned embeddings}
+
+    \begin{columns}
+        \begin{column}{0.382 \textwidth}
+            \begin{block}{$e_{t_1} \underset{ELBO}{\longmapsto} h_{t_1}$}
+                Each sample ($d=800$) gets mapped to :
+
+                \begin{itemize}
+                    \item signal covar. $K_{data}$
+                    \item task covar. $K_{tasks}$
+                    \item obs. noise $\vec{\epsilon}$
+                \end{itemize}
+                parameters ($d=8$) \\ which maximize:
+                $$p(f(e_{t_1}) \mid h_{t_1})$$
+            \end{block}
+        \end{column}
+        \begin{column}{0.618 \textwidth}
+                    
+            \begin{figure}
+                \centering
+                \includegraphics[width=\textwidth]{figs/embeddings_double.pdf}
+                \caption{EEG embeddings}
+                \label{fig:my_label}
+            \end{figure}
+        \end{column}
+    \note[item]{Each point represents a 10-second EEG segment fit with a Gaussian process.}
+    \note[item]{The parameters of the Gaussian Process consist of three types: data covariance kernel, task covariance kernel, and observational noise parameters.}
+    \note[item]{The full kernel will be something like $K_{data} \otimes (covar\_factor * covar\_factor^{T} + diag(softplus(raw\_var))$, to which $softplus(raw\_noise)$ is added as a diagonal component. In some sense, the raw\_var parameter captures the task dependent noise. The likelihood noise is indeed somewhat redundant, but is important because it distinguishes between observations $e_t$ and the latent function f.}
+        
+    \end{columns}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%% Estimating Seizure LIkelihood %%%%%%%%%%%
+\subsection{Estimating Seizure Posterior Probability}
+
+\begin{frame}{Estimating densities $pdf_E(h)$}
 \begin{columns}[t]
-    \begin{column}{0.45\textwidth}
+    \begin{column}{0.382\textwidth}
        
     \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{figs/embeddings_double.pdf}
-            \caption{Embeddings portrayed in two dimensions.}
+            \caption{Eight-dimensional embeddings preserve class separability.}
             \label{fig:my_label}
         \end{figure}        
     \end{column}
-    \begin{column}{0.55\textwidth}
+    \begin{column}{0.618\textwidth}
 
     \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{figs/de_pc1_pc2.pdf}
-            \caption{Fitting a GMM density estimator gives $\hat{pdf}(e)$}
+            \caption{Estimating $\hat{pdf_E}(h)$ with Gaussian mixture model}
             \label{fig:my_label}
         \end{figure}
         
@@ -558,6 +613,9 @@
     \end{column}
     \end{columns}
 
+    \note[item]{So, now we have a set of 8-dimensional vectors, such that seizures are distinguishable from non-seizures.}
+    \note[item]{The next step is to es}
+    \note[item]{GMM with 4 components was fit to a 5 dimensional }
     
 \end{frame}
 
@@ -566,14 +624,14 @@
 
     \begin{columns}[T] % T specifies that the columns should be top-aligned
     
-    \begin{column}{0.5\textwidth} % specifies the width of the left column
+    \begin{column}{0.382\textwidth} % specifies the width of the left column
     
         \begin{figure}
         \includegraphics[width=\textwidth]{figs/de_pc1_pc2_likelihood_hdr_large_threshold.pdf}
     \end{figure}
     \end{column}
     
-    \begin{column}{0.5\textwidth} % specifies the width of the right column
+    \begin{column}{0.618\textwidth} % specifies the width of the right column
     \onslide<1->{
         \begin{figure}
             \includegraphics[width=\textwidth]{figs/de_pc1_pc2_likelihood_hdr_small_threshold.pdf}
@@ -677,7 +735,7 @@
 \end{frame}
 
 
-\subsection{Bayesian Estimation}
+\subsubsection{Bayesian Estimation}
 \begin{frame}{Estimate seizure likelihood with Bayes' theorem}
     
     \begin{alertblock}{Goal}
@@ -686,7 +744,7 @@
 
     \pause
     \begin{block}{Equivalent goal}
-        \vspace{-10}
+        \vspace{-\baselineskip}
         $$\mathbb{P}(S_t \mid E_t) = 1 - \mathbb{P}(\cancel{S_t} \mid E_t) = 1 - \frac{\mathbb{P}(E_t \mid \cancel{S}) \mathbb{P}(\cancel{S}_t)}{\mathbb{P}(E_t)} = 1 - \frac{L_{\cancel{S}}(E_t)P_{\cancel{S}}(t)}{M(E_t)}$$
     \end{block}
 
@@ -759,7 +817,6 @@
 
 
 \section{Empirical Results}
-
 \begin{frame}<1,2,3>{Evaluating BSLE on validation data}
     \only<1> {
     \begin{figure}
@@ -801,6 +858,7 @@
     \end{columns}
     }
     \note<1->[item]{AUC-ROC scores smoothly distributed in the hyper-parameter space of both the unsupervised and weakly-supervised models, showing a low risk of over-fitting}
+    \note<1->[item]{The lower region of $\alpha$ is }
 \end{frame}
 
 
@@ -851,7 +909,7 @@
         % \nocite{*}
         % \printbibliography
         \bibliographystyle{abbrvnat}
-        \bibliography{refs.bib}
+        \bibliography{refs}
 \end{frame}
 
 
@@ -860,27 +918,77 @@
 \begin{frame}{Apx. 1 - Gaussian processes}
 
     \begin{definition}[Gaussian process]
-        $$f(x) \sim \mathcal{GP}(m(x), k(x, x')$$
+        $$f(t) \sim \mathcal{GP}(m(t), k(t, t')$$
         where
-        $$m(x) = \mathbb{E}[f(x)]$$
-        $$k(x, x') = \mathbb{E}[(f(x) - m(x))(f(x') - m(x'))]$$
+        $$m(t) = \mathbb{E}[f(t)]$$
+        $$k(t, t') = \mathbb{E}[(f(t) - m(t))(f(t') - m(t'))]$$
     \end{definition}
     \pause
     \begin{definition}[Matérn class of covariance functions]
-        $$k_{Matern}(x, x') := \frac{2^{1-\nu}}{\Gamma(\nu)}(\sqrt{2\nu}d)^\nu K_\nu (\sqrt{2\nu}d)$$
+        $$k_{Matern}(t, t') := \frac{2^{1-\nu}}{\Gamma(\nu)}(\sqrt{2\nu}d)^\nu K_\nu (\sqrt{2\nu}d)$$
         where
-        $$d = (x-x')^T \Phi^{-2} (x-x')$$
+        $$d = (t-t')^T \Phi^{-2} (t-t')$$
     \end{definition}
 
     \note[item]{A Gaussian process, defined by a mean function and covariance kernel function, with a Matérn kernel is a specific family of distribution over functions. Parameterized by <FILL IN>, the}
     
-    \note[item]{$d$ is the distance between $x$ and $x'$ scaled by the \emph{lengthscale} parameter $\Phi$}
+    \note[item]{$d$ is the distance between $t$ and $t'$ scaled by the \emph{lengthscale} parameter $\Phi$}
     \note[item]{$\nu$ is a smoothness parameter. In this work, it is taken to be $\frac{2}{3}$, which limits us to functions which are exactly once differentiable.}
     \note[item]{$K_\nu$ is a modified Bessel function. The modified Bessel function has the property of being rapidly decaying, which means that it falls off quickly as the distance between two points increases. }
     \note[item]{+++This property is important in the context of kernel-based machine learning algorithms because it allows the kernel function to effectively capture the local structure of the data, while ignoring irrelevant or noisy features that may be present in the data.}
 
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}<1-2>{Sample spaces}
+\begin{columns}[t]
+    \begin{column}{0.5\textwidth}
+    \begin{block}{}
+        \onslide<1->{
+        Let:
+        \begin{enumerate}
+            \item {$e_t \sim E(t) \in \Omega_E = \mathbb{R}^{c \times N}$}
+        \end{enumerate}
+        a random EEG variable,
+        }
+        
+        \bigskip
+        \onslide<2->{
+            and:
+            \begin{enumerate}
+                  \setcounter{enumi}{1}
+                \item $s_t \sim S(t) \in \Omega_S = \{0, 1\}$
+            \end{enumerate}
+            a random Seizure variable.
+        }
+    \end{block}
+    
+    \end{column}
+    \begin{column}{0.5\textwidth}
+
+    \begin{figure}  
+        \centering
+        \includegraphics[width=\textwidth]{figs/sample_space_two_top_frames.pdf}
+        \caption{Samples from $E(t_1)$ and $E(t_2)$.}
+        \label{fig:my_label}
+
+        \onslide<2->
+        \centering
+        \includegraphics[width=\textwidth]{figs/sample_space_two_bottom_frames.pdf}
+        \caption{Samples from $S(t_1)$ and $S(t_2)$}
+        \label{fig:my_label}
+    \end{figure}
+
+        
+    \end{column}
+    \end{columns}
+
+    \note<1->[item]{Defining a sample space and random variables.}
+
+
+\end{frame}
 
 \end{document}
 
