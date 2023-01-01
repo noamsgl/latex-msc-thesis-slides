@@ -340,7 +340,7 @@
     \end{enumerate}
 
     \onslide<4> {
-    \begin{block}{}
+    \begin{block}{Related works}
         \begin{enumerate}
             \item \cite{gardner2006one} - unsupervised seizure detection.
             \item \cite{karoly2017circadian} - circadian rhythms as priors.
@@ -428,8 +428,76 @@
 
 \section{Research Plan}
 
+\subsection{Theoretical Basis}
+    
+% \begin{frame}{Theoretical Basis}
 
-\subsection{Data \& Methods}
+%     \begin{definition}[Cumulative Distribution Function - CDF]
+%         For a general continuous random variable $E$, the CDF of $E$ is:
+%          $$F(e) = \prob(E \leq e) = \mathbb{E}(I(E \leq e)) \text{ for each } e \in \Omega_E$$
+%     \end{definition}
+%     \pause
+%     Adapted from \cite{dong2020tutorial}:    
+%     \begin{definition}[$\alpha$-quantile]
+%         For a fixed $0<\alpha<1$, an $\alpha$-quantile of $E$ is a constant, $L_\omega \in \Omega_E$, such that $\alpha$ of the distribution lies below $L_\alpha$.
+%          Furthermore, $L_\alpha$ is the (generalized) inverse of the true CDF $F$ evaluated at $\alpha$:
+%          $$L_\alpha = F^{-1}(\alpha) \equiv \inf \{e : F(e) \geq \alpha \}$$
+%     \end{definition}
+%     \note[item]{The cummulative distribution function of a variable E is: <READ EQUATION>}
+%     \note[item]{It is the probability of observing a value at least as extreme as $E$.}
+%     \note[item]{+++: in the multivariate case, we just use the joint probability of each of the variables.}
+%     \note[item]{Quantiles are frequently used to assess risk in a wide spectrum of application areas, such as finance, nuclear engineering and service industries.}
+%     \note[item]{For example, the median is the 0.5 quantile.}
+%     \note[item]{If $F$ is continuous at $L$, then $F(L)=\alpha$, but $F(L) \geq \alpha$ in general.}
+% \end{frame}
+
+\begin{frame}{Theoretical Basis}
+    % \pause
+    % \centering
+    Adapted from \cite{hyndman1996computing}:
+    \begin{definition}[$\alpha$-Highest Density Region - $\alpha$-HDR]
+        Let $p(e)$ be the density function of a random variable $E$. For a fixed $0 < \alpha < 1$, and a sample space $\Omega_E$:
+
+        $$L_\alpha\text{-HDR} := \{e: p(e) \geq  L_\alpha\} \subseteq \Omega_E$$
+        where
+        $$L_\alpha \equiv \sup_{\mathbb{R}} \{L: \prob(e \in L_\alpha\text{-HDR})) \geq 1 - \alpha \}$$
+    \end{definition}
+
+    \pause
+    \begin{corollary}
+        $$\text{Vol}(L_\alpha\text{-HDR}) \equiv \inf_{R \subseteq \Omega_E} \{\text{Vol}(R) :  \prob(e \in R) \geq \alpha\}$$
+    \end{corollary}
+    \note[item]{By definition, $L_\alpha$ if the highest constant such that $\prob(e \in L_\alpha\text{-HDR} \geq 1 - \alpha$}
+    \note<2>[item]{It follows immediately from the definition that of all regions of probability coverage $\alpha$, the HDR has the smallest possible volume in the sample space of $E$.}
+\end{frame}
+
+\begin{frame}{Theoretical Basis}
+    % \pause
+    % \centering
+    \vspace{-\baselineskip}
+    \begin{definition}[Normal model - $\cancel{S}$]
+        For a fixed $0 < \alpha < 1$, a model for normal EEG in $\Omega_E$ is:
+        $$\cancel{S} := L_\alpha\text{-HDR} \subseteq \Omega_E$$
+    \end{definition}
+    \pause
+    \begin{block}{Research problem}
+        % \vspace{-\baselineskip}
+        $$\mathbb{P}(S_t \mid E_t) = 1 - \mathbb{P}(\cancel{S_t} \mid E_t) = 1 - \frac{\mathbb{P}(E_t \mid \cancel{S}) \mathbb{P}(\cancel{S}_t)}{\mathbb{P}(E_t)}$$
+
+        \begin{enumerate}
+            \item $\prob(e_t)$ is the likelihood of observing $e_t$ in general.
+            \item $\prob(e_t \mid \cancel{S_t})$ is the likelihood of observing $e_t \in \cancel{S_t}$.
+            \item $1 - \prob(\cancel{S_t})$ is the prior belief of a seizure at time $t$.
+        \end{enumerate}
+        How do we calculate these values?
+    \end{block}
+    \note[item]{From \cite{gruhl2022novelty}: In High dimensional feature spaces, the density is usually sparsely distributed. That is, only a small fraction of the feature space is populated with \emph{expected} observations. \cite{hyndman1996computing} proposes High-Density Regions as the most appropriate subset to summarize a distribution, since most of the density mass is located in these regions, and, thus, they also contain the most information.}
+    \note[item]{A model for "normal" EEG is constructed using the highest density region of observations. The parameter $\alpha$ should be optimized for.}
+    \note[item]{$\prob(e_t \mid \cancel{S_t})$ and $\prob(e_t)$ are computed with Monte Carlo Quantile Estimation. The likelihood is the quantile of the sample.}
+    \note[item]{$\prob(\cancel{S_t})$ is a prior function which relies only on the time itself.}
+\end{frame}
+
+\subsection{Data}
 
 \begin{frame}{Data}
     \begin{columns}[T]
@@ -462,15 +530,15 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%% Evaluation Plan %%%%%%%%%%%%%%%
-\subsubsection{Evaluation Plan}
-\begin{frame}<1-2>{Simulating a Prospective Study}
+\subsection{Evaluation Plan}
+\begin{frame}<1-2>{Evaluation}
 
 \only<1>{
     \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figs/unsupervised_study_scope.pdf}
     \label{fig:my_label}
-    \caption{Scope of study}
+    \caption{Simulating a Prospective Study}
     \end{figure}
 }
 
@@ -479,21 +547,22 @@
     \centering
     \includegraphics[width=\textwidth]{figs/weakly_supervised_study_scope.pdf}
     \label{fig:my_label}
-    \caption{Scope of study}
+    \caption{Simulating a Prospective Study}
     \end{figure}
 }
     
-\note[item]{We simulate a prospective study, which starts with an offline calibration phase, followed by an online validation phase.}
-\note[item]{The separation of concerns ensures simulating a real-time setting, in which the 'offline' calibration phase is followed by an 'online' seizure detection mode.}
-\note[item]{In the unsupervised study, we randomly sample 3000 segments of length 10 seconds each.}
+\note[item]{We simulate a prospective study, which starts with an offline calibration phase, followed by an online validation phase.}\note[item]{In the unsupervised study, we randomly sample 3000 segments of length 10 seconds each.}
 \note[item]{We use these segments to estimate the parameters of the BSLE model.}
 \note[item]{Next, we take all the seizures from the validation data, along with 3000 randomly sampled segments. We apply the BSLE estimation to each sample independently, to produce seizure probabilities.}
-\note<2->[item]{In the weakly supervised version, we allow the option of appending a list of time stamps during which a past seizure occurred. These can be gained from clinical labels as well as self-reported seizure records.}
-\note<2>[item]{In this case, a cyclical 24-hour prior function is provided based on domain knowledge.}
+\note<2->[item]{As mentioned, in some cases, seizure timestamps are available. Weak supervision is the field in machine learning which deals with learning under imprecise or incomplete labels. In the clinic, seizures are often missed in real-time and efforts to complete the labels might not succeed. In addition, people who use personal seizure diaries to track their seizures, often forget or otherwise unable to keep an accurate record.}
+\note<2>[item]{In this case, we use the past events to construct an inductive bias. Internally, this is done with a cyclical prior function, similar to Karoly et al.}
+\note[item]{+++ These are available, e.g., from clinical labels as well as self-reported seizure records.}
+\note[item]{+++ The separation of concerns ensures simulating a real-time setting, in which the 'offline' calibration phase is followed by an 'online' seizure detection mode.}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%% Pipeline %%%%%%%%%%%%%%%
+\subsection{Methods}
 \begin{frame}{Methods}
     \begin{figure}
         \centering
@@ -502,13 +571,14 @@
         \label{fig:my_label}
     \end{figure}
 
-        \note[item]{Our method composes two stages: First, the EEG distribution is modeled and is used to assign novel sequences higher seizure likelihoods. Then, a priori knowledge based on the time covariate is added for supervised improvements.
-        \item Weakly Supervised Bayesian Estimation of Seizure Likelihood}
+        \note[item]{After collecting the data, appropriate features are extracted with Gaussian Processes.}
+        \note[item]{In the feature space, we apply our Bayesian estimation algorithm.}
+        \note[item]{Finally, a probability score is produced.}
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%% Embeddings %%%%%%%%%%%%%%%
-\subsection{Embedding EEG}
+\subsubsection{Embedding EEG}
 
 \begin{frame}{Embedding EEG Segments, by}
 
@@ -573,13 +643,14 @@
             \begin{figure}
                 \centering
                 \includegraphics[width=\textwidth]{figs/embeddings_double.pdf}
-                \caption{EEG embeddings}
+                \caption{EEG embeddings. Eight dimensional embeddings preserve class separability.}
                 \label{fig:my_label}
             \end{figure}
         \end{column}
     \note[item]{Each point represents a 10-second EEG segment fit with a Gaussian process.}
     \note[item]{The parameters of the Gaussian Process consist of three types: data covariance kernel, task covariance kernel, and observational noise parameters.}
-    \note[item]{The full kernel will be something like $K_{data} \otimes (covar\_factor * covar\_factor^{T} + diag(softplus(raw\_var))$, to which $softplus(raw\_noise)$ is added as a diagonal component. In some sense, the raw\_var parameter captures the task dependent noise. The likelihood noise is indeed somewhat redundant, but is important because it distinguishes between observations $e_t$ and the latent function f.}
+    \note[item]{It is evident that the classes are kept separate in this space.}
+    \note[item]{+++ The full kernel will be something like $K_{data} \otimes (covar\_factor * covar\_factor^{T} + diag(softplus(raw\_var))$, to which $softplus(raw\_noise)$ is added as a diagonal component. In some sense, the raw\_var parameter captures the task dependent noise. The likelihood noise is indeed somewhat redundant, but is important because it distinguishes between observations $e_t$ and the latent function f.}
         
     \end{columns}
 
@@ -587,7 +658,7 @@
 
 
 %%%%%%%%%%%%%%% Estimating Seizure LIkelihood %%%%%%%%%%%
-\subsection{Estimating Seizure Posterior Probability}
+\subsubsection{Estimating Seizure Posterior Probability}
 
 \begin{frame}{Estimating densities $pdf_E(h)$}
 \begin{columns}[t]
@@ -736,31 +807,6 @@
 
 
 \subsubsection{Bayesian Estimation}
-\begin{frame}{Estimate seizure likelihood with Bayes' theorem}
-    
-    \begin{alertblock}{Goal}
-        $$\mathbb{P}(S_t \mid E_t) = \frac{\mathbb{P}(E_t \mid S) \mathbb{P}(S_t)}{\mathbb{P}(E_t)} = \frac{L(E_t)P(t)}{M(E_t)}$$
-    \end{alertblock}
-
-    \pause
-    \begin{block}{Equivalent goal}
-        \vspace{-\baselineskip}
-        $$\mathbb{P}(S_t \mid E_t) = 1 - \mathbb{P}(\cancel{S_t} \mid E_t) = 1 - \frac{\mathbb{P}(E_t \mid \cancel{S}) \mathbb{P}(\cancel{S}_t)}{\mathbb{P}(E_t)} = 1 - \frac{L_{\cancel{S}}(E_t)P_{\cancel{S}}(t)}{M(E_t)}$$
-    \end{block}
-
-    \pause
-    \begin{block}{Method overview}
-        \begin{enumerate}[<+->]
-            \item $M(E_t)$ is the likelihood of observing $E_t$ in general.
-            \item $L_{\cancel{S}}(E_t)$ is the likelihood of observing $E_t$ provided $\cancel{S}$.
-            \item $P_{\cancel{S}}(t)$ is chosen to model the temporal seizure patterns.
-        \end{enumerate}
-    \end{block}
-
-    \note[item]{$L(E_t)$ and $M(E_t)$ are computed with Monte Carlo Quantile Estimation. The likelihood is the quantile of the sample, trimmed at the HDR_\alpha boundary.}
-    \note[item]{$P(t)$ is a prior function which relies only on the time covariate.}
-    \note[item]{! Write Equivalent goal on board}
-\end{frame}
 
 
 
@@ -902,9 +948,14 @@
 	\begin{center}
 		{\Huge\calligra Thank You}
 	\end{center}
+        \note[item]{Limitations: \begin{enumerate}
+            \item Guassian process feature extraction is compute intensive. But there are work arounds for this.
+            \item The classifier may not be as good as a fully supervised alternative when the daaset is available, but need to validate this.
+            \item The approach assumes that seizures are "novel". If somebody has seizures that are common (for example 1:1 ratio) then the technique won't work.
+        \end{enumerate}}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[allowframebreaks]
         \frametitle{References}
         % \nocite{*}
         % \printbibliography
