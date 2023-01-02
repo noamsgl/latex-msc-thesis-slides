@@ -538,7 +538,7 @@
     \centering
     \includegraphics[width=\textwidth]{figs/unsupervised_study_scope.pdf}
     \label{fig:my_label}
-    \caption{Simulating a Prospective Study}
+    \caption{Simulating a Prospective Study - Unsupervised Mode}
     \end{figure}
 }
 
@@ -547,7 +547,7 @@
     \centering
     \includegraphics[width=\textwidth]{figs/weakly_supervised_study_scope.pdf}
     \label{fig:my_label}
-    \caption{Simulating a Prospective Study}
+    \caption{Simulating a Prospective Study - Weakly Supervised Mode}
     \end{figure}
 }
     
@@ -573,20 +573,20 @@
 
         \note[item]{After collecting the data, appropriate features are extracted with Gaussian Processes.}
         \note[item]{In the feature space, we apply our Bayesian estimation algorithm.}
-        \note[item]{Finally, a probability score is produced.}
+        \note[item]{Finally, a seizure probability is produced.}
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%% Embeddings %%%%%%%%%%%%%%%
-\subsubsection{Embedding EEG}
+\subsubsection{Feature Extraction}
 
-\begin{frame}{Embedding EEG Segments, by}
+\begin{frame}{Embedding an EEG segment, by}
 
 \begin{columns}[T] % T specifies that the columns should be top-aligned
     
     \begin{column}{0.618\textwidth} % specifies the width of the left column
 
-    \begin{block}{Maximizing the likelihood of:}
+    \begin{block}{maximizing the likelihood of:}
         % Maximize the likelihood of:
         $$e(t_1) \sim \mathcal{GP}(m(t), k(t, t'))$$
         % where (reminder):
@@ -622,7 +622,7 @@
 
 \end{frame}
 
-\begin{frame}{Learned embeddings}
+\begin{frame}{Computed embeddings}
 
     \begin{columns}
         \begin{column}{0.382 \textwidth}
@@ -658,65 +658,65 @@
 
 
 %%%%%%%%%%%%%%% Estimating Seizure LIkelihood %%%%%%%%%%%
-\subsubsection{Estimating Seizure Posterior Probability}
+\subsubsection{Calibrating Internal Model}
 
-\begin{frame}{Estimating densities $pdf_E(h)$}
-\begin{columns}[t]
+\begin{frame}{Calibrating Internal Model Parameters}
+\begin{columns}[T]
     \begin{column}{0.382\textwidth}
-       
-    \begin{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{figs/model_calibration.pdf}
+            % \caption{Caption}
+            \label{fig:my_label}
+        \end{figure}
+        \vspace{-1.5\baselineskip}
+        \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{figs/embeddings_double.pdf}
-            \caption{Eight-dimensional embeddings preserve class separability.}
             \label{fig:my_label}
         \end{figure}        
     \end{column}
     \begin{column}{0.618\textwidth}
-
     \begin{figure}
             \centering
             \includegraphics[width=\textwidth]{figs/de_pc1_pc2.pdf}
-            \caption{Estimating $\hat{pdf_E}(h)$ with Gaussian mixture model}
+            \caption{Estimated $\hat{pdf_E}(h)$ using Gaussian mixture model}
             \label{fig:my_label}
         \end{figure}
-        
-        
+    
     \end{column}
     \end{columns}
 
     \note[item]{So, now we have a set of 8-dimensional vectors, such that seizures are distinguishable from non-seizures.}
-    \note[item]{The next step is to es}
-    \note[item]{GMM with 4 components was fit to a 5 dimensional }
-    
+    \note[item]{The next step is to estimate the density function }
+    \note[item]{For computational speed ups, the GMM with 4 components was fit to a 5 dimensional reduced version of the original 8 dimensions.}
 \end{frame}
 
 
-\begin{frame}{Highest density regions}
-
+\begin{frame}{Model of Normal EEG}
+    
+    \begin{definition}[Normal model - $\cancel{S}$]
+        For a fixed $0 < \alpha < 1$, a model for normal EEG in $\Omega_E$ is:
+        $$\cancel{S} := L_\alpha\text{-HDR} \subseteq \Omega_E$$
+    \end{definition}
+    
     \begin{columns}[T] % T specifies that the columns should be top-aligned
+    \begin{column}{0.5 \textwidth}
     
-    \begin{column}{0.382\textwidth} % specifies the width of the left column
-    
-        \begin{figure}
-        \includegraphics[width=\textwidth]{figs/de_pc1_pc2_likelihood_hdr_large_threshold.pdf}
-    \end{figure}
-    \end{column}
-    
-    \begin{column}{0.618\textwidth} % specifies the width of the right column
-    \onslide<1->{
         \begin{figure}
             \includegraphics[width=\textwidth]{figs/de_pc1_pc2_likelihood_hdr_small_threshold.pdf}
+            \caption{Illustration of $\cancel{S}$ with small $\alpha$.}
         \end{figure}
-    }
-    \end{column}
     
+    \end{column}    
+    \begin{column}{0.5 \textwidth}
+        \begin{figure}
+            \includegraphics[width=\textwidth]{figs/de_pc1_pc2_likelihood_hdr_large_threshold.pdf}
+            \caption{Illustration of $\cancel{S}$ with large $\alpha$.}
+        \end{figure}
+        
+    \end{column}        
     \end{columns}
-    \begin{definition}[$\alpha$- Highest density region]
-        \begin{equation*}
-            R(f_\alpha) = \{ x : f(x) \geq f_\alpha \},
-        \end{equation*}
-        $f_\alpha$ is the largest constant such that $\prob(X \in R(f_\alpha)) \geq 1-\alpha$
-    \end{definition}
 
     \note[item]{Highest density regions are regions in a space, such that a specific proportion of the mass lies within the region.}
     \note[item]{For example on the left, when we choose a low $\alpha$, a low threshold for the highest density region, we get two small peaks which account for about 10 percent of the total mass.}
@@ -724,7 +724,9 @@
     \note[item]{Now, this threshold $\alpha$ is a hyperparameter of the model. But let's assume it's fixed for the next slide, at a relatively low threshold, between 5 and 10 percent.}
 \end{frame}
 
-\begin{frame}{Likelihood function}
+\subsubsection{Inference Procedure}
+
+\begin{frame}{Inference Procedure}
     \begin{figure}
         \centering
         \includegraphics[width=0.9\textwidth]{figs/de_pc1_pc2_likelihood_likelihood_small_threshold_intro.pdf}
@@ -734,8 +736,7 @@
     \note[item]{The green is the 0.05 highest density region.}
 \end{frame}
 
-\begin{frame}{Likelihood function}
-
+\begin{frame}{Inference Procedure}
 
     \begin{columns}[T] % T specifies that the columns should be top-aligned
     
@@ -754,79 +755,71 @@
 
     \end{columns}
 
-    \begin{definition}[BSLE likelihood]
+    \begin{block}{Computing Likelihood}
         \begin{equation*}
-        \label{eq:c3bsle:likelihood}
-        L_{\cancel{S}}(e^{new)} = 
-        \prob(e^{new} \mid \cancel{S} ; \alpha) = \begin{cases}0 &\text{if $e^{new} \notin HDR_\alpha$} \\
-        \mathcal{Z}(e^{new}) &\text{if $e^{new} \in HDR_\alpha$}
-        
+        \label{eq:c3bsle:likelihood} 
+        \prob(e^{new} \mid \cancel{S} ; \alpha) = \begin{cases}
+        \frac{\text{Vol}(L_{e^{new}}\text{-HDR})}{\text{Vol}(\cancel{S})} &\text{if } $e^{new} \in \cancel{S}$ \\ 0 &\text{if } $e^{new} \in S$
         \end{cases}
         \end{equation*}
-    \end{definition}
+    \end{block}
     
 \end{frame}
 
-\begin{frame}{Marginal Likelihood}
+\begin{frame}{Inference Procedure}
 
     \begin{columns}[T] % T specifies that the columns should be top-aligned
     
     \begin{column}{0.55\textwidth} % specifies the width of the left column
 
-    \begin{definition}[BSLE marginal likelihood]
-    \begin{equation*}
+    \begin{block}{Computing Marginal Likelihood}
+    \begin{align*}
     \label{eq:c3bsle:evidence}
-    \prob(E) = \prob(\{pdf(e) \leq pdf(E)\})
-    \end{equation*}
-    \end{definition}
-    
-    \begin{block}{Geometric meaning}
-        The probability of observing a sample $e^{new}$, is equal to the purple region divided by the entire region. 
+    \prob(e^{new}) &= \frac{\text{Vol}(L_{e^{new}}\text{-HDR})}{\text{Vol}(\Omega_E)}
+    \end{align*}
     \end{block}
-    
+
+    \begin{block}{Estimating w/ Monte Carlo}
+        $$\prob(e^{new}) \gets \frac{\left|\{ e_i \mid \hat{p}(e^{new}) \le \hat{p}(e_i) \} \right|}{|\{ e_i\} |}$$
+    \end{block}
+        
     \end{column}
     
     \begin{column}{0.45\textwidth} % specifies the width of the right column
-    \begin{figure}
-        \includegraphics[width=\textwidth]{figs/de_pc1_pc2_likelihood_e_new.pdf}
-    \end{figure}
-
         \begin{figure}
             \includegraphics[width=\textwidth]{figs/de_pc1_pc2_likelihood_e_new_boundary.pdf}
         \end{figure}
-    
+
     \end{column}
     
     \end{columns}
+    \note[item]{The probability of observing a sample $e^{new}$, is equal to the purple region divided by the entire region.}
     \note[item]{The essence of the novelty score $\mathcal{Z}(e^{new})$ is that it maps data samples to the interval $[0,1]$, such that more anomalous samples (i.e. samples from less dense regions) are given larger values.}
-    \note[item]{We adopt quantiles as a way of measuring risk.}
-    \note[item]{For a fixed constant $0<p<1$, the $p$-quantile of a continuous random variable is a constant $\zeta$ such that $p$ of the distribution's mass lies below $\zeta$.}
-    \note[item]{For example, the median is the 0.5-quantile.}
     \note[item]{The method used here is called Quantile estimation with Monte Carlo Sampling.}
 \end{frame}
 
 
-\subsubsection{Bayesian Estimation}
 
 
-
-\begin{frame}<1-3>{Priors}
+\begin{frame}<1-2>{Priors}
+    \vspace{-2\baselineskip}
     \begin{columns}
     \begin{column}{0.55\textwidth}
         \onslide<1->{
-        \begin{block}{Uniform prior}
-            $$\prob(S_t) = \lambda_0 \cdot T$$
+        \begin{block}{Non-informative prior}
+            % $$\prob(\cancel{S_t}) = \lambda_0 \cdot T$$
+            $$\prob(\cancel{S_t}) = C$$
         \end{block}
         }
-        \onslide<2->{
-        \begin{block}{Circadian prior}
+        \onslide<1->{
+        \begin{block}{Informative prior}
             \begin{align*}
             f(x | \mu, \kappa ; \omega) = \frac{\exp (\kappa \cos (\omega (x - \mu)))}{2 \pi I_0(\kappa)}
             \label{eq:2background:vm_density}
             \end{align*}
         
             \begin{equation*}
-            \prob(S_t) = \frac{1}{K}\sum_{i=0}^{23} f(t \mid i, k) 
+            \prob(\cancel{S_t}) = \frac{1}{K}\sum_{i=0}^{23} f(t \mid i, k) 
             \end{equation*}
 
         \end{block}
@@ -834,14 +827,14 @@
     \end{column}
 
     \begin{column}{0.45\textwidth}
-        \onslide<2-3>
-        \begin{block}{Circadian prior}
+        \onslide<1-2>
+        \begin{block}{Empirical Circadian Profile}
         \begin{figure}
             \begin{overprint}
-            \onslide<2>
+            \onslide<1>
             \centering
             \includegraphics[width=\textwidth]{figs/polar_hist.pdf}
-            \onslide<3>\centering
+            \onslide<2>\centering
             \includegraphics[width=\textwidth]{figs/vm_prior.pdf}
             \end{overprint}
         \end{figure}
@@ -853,7 +846,7 @@
     % \begin{block}{}
     %     Uniform prior on left. Circadian prior on right.       
     % \end{block}
-    \note<1->[item]{The uniform prior is the simplest. It means I give equal weight to each time point. My knowledge does not increase or degrade at any point.}
+    \note<1->[item]{The uniform prior is a noninformative prior. Technically, it gives equal weight to each time point. My knowledge does not increase or degrade at any point.}
     \note<2->[item]{Another option is to look at seizure cycles, which has been explored more in recent years.}
     \note<2->[item]{Following other works, we set the prior to be cyclical with the von Mises distribution. Where $K$ is a normalizing constant evaluated numerically (\texttt{np.trapz}).}
     \note<2->[item]{
@@ -863,7 +856,7 @@
 
 
 \section{Empirical Results}
-\begin{frame}<1,2,3>{Evaluating BSLE on validation data}
+\begin{frame}<1,2>{Evaluating BSLE on validation data}
     \only<1> {
     \begin{figure}
         \centering
@@ -904,7 +897,7 @@
     \end{columns}
     }
     \note<1->[item]{AUC-ROC scores smoothly distributed in the hyper-parameter space of both the unsupervised and weakly-supervised models, showing a low risk of over-fitting}
-    \note<1->[item]{The lower region of $\alpha$ is }
+    \note<1->[item]{The lower region of $\alpha$ (i.e. most of $\Omega_E$ is in $\cancel{S}$, the weakly supervised model is a better predictor. The advantage disappears once we define the normal model $\cancel{S}$ to include ~96\% or less of the highest density region samples.}
 \end{frame}
 
 
@@ -990,6 +983,34 @@
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%
+
+\begin{frame}{Apx 2. - ROC curves}
+    \begin{columns}
+
+    \begin{column}{0.5\textwidth}
+    \begin{figure}
+    \begin{subfigure}{\linewidth}
+    \includegraphics[width=\linewidth]{figs/roc_auc_unsupervised.pdf}
+    % \caption{Figure 1}
+    \end{subfigure}
+    \end{figure}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+    \begin{figure}
+    \begin{subfigure}{\linewidth}
+    \includegraphics[width=\linewidth]{figs/roc_auc_weakly_supervised.pdf}
+    % \caption{Figure 2}
+    \end{subfigure}
+    \end{figure}
+    \end{column}
+    % \caption{ROC curves for $\alpha=0.5$ and $\tau=0$}
+    \end{columns}
+\end{frame}
+
+
+% references
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1041,7 +1062,6 @@
 
 \end{frame}
 
-\end{document}
+% END APPENDIX
 
-% references
-% https://www.cs.ubc.ca/~murphyk/Papers/dbnchapter.pdf
+\end{document}
